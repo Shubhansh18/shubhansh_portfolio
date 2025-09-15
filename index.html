@@ -89,7 +89,10 @@
         </section>
 
         <div class="main-layout">
-            <div id="three-container"><canvas id="render-canvas"></canvas></div>
+            <div id="three-container" class="relative w-full h-[60vh] md:w-[45%] md:h-screen md:sticky top-0 flex-shrink-0">
+                <canvas id="render-canvas"></canvas>
+                <div class="absolute inset-0 z-10 md:hidden"></div>
+            </div>
             <div id="content-container">
                 <section id="skills" class="content-section">
                     <div class="reveal-on-scroll">

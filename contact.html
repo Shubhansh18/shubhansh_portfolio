@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Shubhansh Gupta</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-primary: #02040a; --bg-secondary: #0a0e17; --text-primary: #e6edf3;
+            --text-secondary: #8b949e; --accent-primary: #3b82f6; --accent-secondary: #16a34a;
+            --border-color: #30363d;
+        }
+        [x-cloak] { display: none !important; }
+        
+        body {
+            font-family: 'Outfit', sans-serif; background-color: var(--bg-primary);
+            color: var(--text-primary); overflow-x: hidden;
+        }
+        
+        .glass-ui {
+            background: rgba(10, 14, 23, 0.5);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+        #particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        .form-radio:checked {
+            background-color: var(--accent-primary);
+            border-color: var(--accent-primary);
+        }
+        .form-radio:checked + label {
+            color: var(--text-primary);
+            border-color: var(--accent-primary);
+        }
+    </style>
+</head>
+<body>
+    <canvas id="particle-canvas"></canvas>
+
+    <main class="min-h-screen w-full flex flex-col items-center justify-center p-4">
+        <div x-data="contactForm()" class="w-full max-w-2xl glass-ui rounded-xl shadow-2xl overflow-hidden">
+            <div class="p-8">
+                <div class="mb-8">
+                    <div class="h-2 w-full bg-secondary rounded-full">
+                        <div class="h-full bg-[var(--accent-primary)] rounded-full transition-all duration-500" :style="`width: ${(step / totalSteps) * 100}%`"></div>
+                    </div>
+                    <p class="text-sm text-secondary text-right mt-2" x-text="`Step ${step} of ${totalSteps}`"></p>
+                </div>
+
+                <div x-show="step === 1" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-x-8" x-transition:enter-end="opacity-100 translate-x-0" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 translate-x-0" x-transition:leave-end="opacity-0 -translate-x-8">
+                    <h2 class="text-3xl font-bold mb-2">Let's start with the basics.</h2>
+                    <p class="text-secondary mb-6">What kind of project do you have in mind?</p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <template x-for="service in services" :key="service">
+                            <div class="relative">
+                                <input type="radio" :id="service" name="service_type" :value="service" x-model="formData.service" class="absolute opacity-0 w-0 h-0 form-radio">
+                                <label :for="service" class="block w-full text-center p-4 border border-[var(--border-color)] rounded-lg cursor-pointer transition-colors text-secondary hover:border-[var(--accent-primary)]" x-text="service"></label>
+                            </div>
+                        </template>
+                    </div>
+
+                    <div x-show="formData.service === 'Others'" x-cloak x-transition class="mt-4">
+                        <input type="text" x-model="formData.otherService" placeholder="Please specify" class="w-full p-3 bg-secondary border border-[var(--border-color)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--accent-primary)] text-gray-700">
+                    </div>
+                </div>
+
+                <div x-show="step === 2" x-cloak x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-x-8" x-transition:enter-end="opacity-100 translate-x-0" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 translate-x-0" x-transition:leave-end="opacity-0 -translate-x-8">
+                    <h2 class="text-3xl font-bold mb-2">Great! How can I reach you?</h2>
+                    <p class="text-secondary mb-6">I'll only use this to respond to your inquiry.</p>
+                    <div class="space-y-4">
+                        <input type="text" x-model="formData.name" placeholder="Your Name" class="w-full p-3 bg-secondary border border-[var(--border-color)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--accent-primary)] text-gray-700">
+                        <p>Please make sure the email is in correct format to be able to proceed to next step*</p>
+                        <input type="email" x-model="formData.email" placeholder="Your Email Address" class="w-full p-3 bg-secondary border border-[var(--border-color)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--accent-primary)] text-gray-700">
+                    </div>
+                </div>
+
+                <div x-show="step === 3" x-cloak x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-x-8" x-transition:enter-end="opacity-100 translate-x-0" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 translate-x-0" x-transition:leave-end="opacity-0 -translate-x-8">
+                    <h2 class="text-3xl font-bold mb-2">Tell me more.</h2>
+                    <p class="text-secondary mb-6">What are the project details? Feel free to include your timeline, budget, or any other specifics.</p>
+                    <textarea x-model="formData.message" rows="5" placeholder="Describe your project here..." class="w-full p-3 bg-secondary border border-[var(--border-color)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--accent-primary)] text-gray-700"></textarea>
+                </div>
+
+                <div x-show="step === 4" x-cloak>
+                    <div class="text-center py-10">
+                        <div x-show="!showCalendly && !emailConfirmed" x-transition>
+                            <h2 class="text-3xl font-bold text-green-400 mb-2">Message Received!</h2>
+                            <p class="text-secondary mb-8">Your details are saved. Choose your preferred next step.</p>
+                            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                                <button @click="emailConfirmed = true" class="w-full border border-[var(--border-color)] text-secondary py-3 px-6 rounded-lg hover:border-[var(--accent-primary)] hover:text-primary transition">
+                                    I'll Wait for an Email
+                                </button>
+                                <button @click="showCalendly = true" class="w-full bg-[var(--accent-primary)] text-white font-bold py-3 px-6 rounded-lg hover:opacity-90 transition">
+                                    Book a Call Instantly
+                                </button>
+                            </div>
+                        </div>
+
+                        <div x-show="emailConfirmed" x-cloak x-transition>
+                            <h2 class="text-3xl font-bold text-green-400 mb-2">Great!</h2>
+                            <p class="text-secondary">I'll be in touch via email shortly. Thank you!</p>
+                            <a href="shubhansh_portfolio.html" class="inline-block mt-8 text-sm text-secondary hover:text-primary">← Back to Portfolio</a>
+                        </div>
+
+                        <div x-show="showCalendly" x-cloak x-transition>
+                            <h3 class="text-2xl font-bold text-center mb-4">Schedule a Time That Works For You</h3>
+                            <div class="h-[580px] bg-gray-900 rounded-lg">
+                                <iframe src="https://calendly.com/shubhanshgupta731/30min" width="100%" height="100%" frameborder="0"></iframe>
+                            </div>
+                            <button @click="showCalendly = false" class="text-sm text-secondary hover:text-primary mt-4">← Back to Options</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-8 border-t border-[var(--border-color)] bg-secondary flex justify-between items-center" x-show="step < 4">
+                <button @click="prevStep" :disabled="step === 1" class="text-secondary hover:text-primary disabled:opacity-50 transition">Back</button>
+                <button @click="nextStep" :disabled="!isStepValid() || isSubmitting" class="bg-[var(--accent-primary)] text-white font-bold py-2 px-6 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition" x-text="isSubmitting ? 'Sending...' : (step === (totalSteps - 1) ? 'Send Message' : 'Next Step')"></button>
+            </div>
+        </div>
+        
+        <a href="shubhansh_portfolio.html" x-show="step < 4" class="inline-block mt-8 text-sm text-secondary hover:text-primary">← Back to Portfolio</a>
+    </main>
+
+    <script>
+        function contactForm() {
+            return {
+                step: 1,
+                totalSteps: 4,
+                showCalendly: false,
+                emailConfirmed: false,
+                isSubmitting: false,
+                services: ['New Web App', 'AI Integration', 'Automation', 'Others'], // Changed
+                formData: {
+                    service: '',
+                    otherService: '', // Added
+                    name: '',
+                    email: '',
+                    message: ''
+                },
+                isStepValid() {
+                    if (this.step === 1) {
+                        if (this.formData.service === 'Others') {
+                            // If 'Others' is selected, the new field must not be empty
+                            return this.formData.otherService.trim() !== '';
+                        }
+                        return this.formData.service !== '';
+                    }
+                    if (this.step === 2) {
+                        // Regular expression for basic email validation
+                        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                        return this.formData.name.trim() !== '' && emailRegex.test(this.formData.email);
+                    }
+                    if (this.step === 3) return this.formData.message.trim() !== '';
+                    return true;
+                },
+                nextStep() {
+                    if (this.isStepValid() && this.step < this.totalSteps) {
+                        if (this.step === (this.totalSteps - 1)) {
+                            this.submitForm();
+                        } else {
+                            this.step++;
+                        }
+                    }
+                },
+                prevStep() {
+                    if (this.step > 1) {
+                        this.step--;
+                    }
+                },  
+                submitForm() {
+                    this.isSubmitting = true;
+                    const scriptURL = 'https://script.google.com/macros/s/AKfycbz5DCPOUKMH4RAgUtkCByaIavRyEXLVXIf8RmDxdQ8BxXSzPPERKs8e5CCj9kG-wenr/exec';
+                    const formData = new FormData();
+
+                    // Append form data
+                    for (const key in this.formData) {
+                        formData.append(key, this.formData[key]);
+                    }
+                    
+                    console.log('Submitting to Google Sheets...');
+                    
+                    fetch(scriptURL, { method: 'POST', body: formData})
+                        .then(response => {
+                            console.log('Success!', response);
+                            this.step = 4; // Move to success step on successful submission
+                        })
+                        .catch(error => {
+                            console.error('Error!', error.message);
+                            alert('Sorry, there was an error sending your message. Please try again.');
+                        })
+                        .finally(() => {
+                            this.isSubmitting = false; // Reset state regardless of outcome
+                        });
+                }
+            }
+        }
+
+        // Simple particle background effect
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        let particles = [];
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 1;
+                this.speedX = Math.random() * 1 - 0.5;
+                this.speedY = Math.random() * 1 - 0.5;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+            }
+            draw() {
+                ctx.fillStyle = 'rgba(139, 148, 158, 0.5)';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            for (let i = 0; i < 50; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+            }
+            requestAnimationFrame(animateParticles);
+        }
+        
+        initParticles();
+        animateParticles();
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            particles = [];
+            initParticles();
+        });
+    </script>
+</body>
+</html>

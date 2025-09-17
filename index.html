@@ -51,7 +51,7 @@
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
-<body x-data>
+<body x-data="{ ideaVisorOpen: false, landingNestOpen: false, linkedinAutomationOpen: false }">
 
     <div id="initial-prompt" class="fixed inset-0 z-[60] flex items-center justify-center pointer-events-none">
         <p class="text-lg md:text-xl text-secondary animate-pulse">// Crafting digital realities...</p>
@@ -158,12 +158,18 @@
                         <p class="mt-2 text-secondary">Transforming challenges into value-driven products.</p>
                     </div>
                     <div class="mt-8 space-y-6">
-                        <a href="https://ideavisor.cotravels.in" target="_blank"><div class="reveal-on-scroll glass-ui p-6 rounded-xl cursor-pointer hover:-translate-y-2 hover:shadow-2xl hover:shadow-green-500/10 hover:border-[var(--accent-secondary)]">
-                            <h3 class="text-xl md:text-2xl font-bold">IdeaVisor</h3><p class="text-secondary">AI-powered validator for early-stage entrepreneurs.</p>
-                        </div></a><br>
-                        <a href="https://landingnest.cotravels.in" target="_blank"><div class="reveal-on-scroll glass-ui p-6 rounded-xl cursor-pointer hover:-translate-y-2 hover:shadow-2xl hover:shadow-green-500/10 hover:border-[var(--accent-secondary)]">
-                            <h3 class="text-xl md:text-2xl font-bold">LandingNest</h3><p class="text-secondary">AI-based landing page generator with free hosting.</p>
-                        </div></a>
+                        <div @click="ideaVisorOpen = true" class="reveal-on-scroll glass-ui p-6 rounded-xl cursor-pointer hover:-translate-y-2 hover:shadow-2xl hover:shadow-green-500/10 hover:border-[var(--accent-secondary)]">
+                            <h3 class="text-xl md:text-2xl font-bold">IdeaVisor</h3>
+                            <p class="text-secondary">AI-powered validator for early-stage entrepreneurs.</p>
+                        </div>
+                        <div @click="landingNestOpen = true" class="reveal-on-scroll glass-ui p-6 rounded-xl cursor-pointer hover:-translate-y-2 hover:shadow-2xl hover:shadow-green-500/10 hover:border-[var(--accent-secondary)]">
+                            <h3 class="text-xl md:text-2xl font-bold">LandingNest</h3>
+                            <p class="text-secondary">AI-based landing page generator with free hosting.</p>
+                        </div>
+                        <div @click="linkedinAutomationOpen = true" class="reveal-on-scroll glass-ui p-6 rounded-xl cursor-pointer hover:-translate-y-2 hover:shadow-2xl hover:shadow-green-500/10 hover:border-[var(--accent-secondary)]">
+                            <h3 class="text-xl md:text-2xl font-bold">Automated LinkedIn Content Pipeline</h3>
+                            <p class="text-secondary">An AI-powered automation to research, write, and publish daily content.</p>
+                        </div>
                     </div>
                 </section>
                 <section id="contact" class="content-section">
@@ -175,6 +181,157 @@
         </div>
     </div>
 
+    <div x-show="landingNestOpen" @keydown.escape.window="landingNestOpen = false" x-transition x-cloak class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
+        <div @click.away="landingNestOpen = false" class="w-full max-w-3xl max-h-[90vh] overflow-y-auto glass-ui rounded-xl border-[var(--accent-secondary)]">
+            <div class="p-8 md:p-12">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h2 class="text-3xl md:text-4xl font-bold text-primary">LandingNest</h2>
+                        <p class="text-secondary mt-1">AI-Powered Landing Page Generator</p>
+                    </div>
+                    <button @click="landingNestOpen = false" class="text-secondary hover:text-primary transition text-3xl">&times;</button>
+                </div>
+
+                <div class="mt-8 space-y-6 text-secondary">
+                    <div>
+                        <h3 class="text-lg font-semibold text-primary mb-2">The Problem</h3>
+                        <p>Businesses and individuals often need simple, effective landing pages quickly, but traditional builders can be complex or costly, and coding from scratch is time-consuming.</p>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-primary mb-2">The Solution</h3>
+                        <p>I built LandingNest, a web application that leverages generative AI to instantly create and host single-page websites from a simple user prompt. It streamlines the entire process, delivering a ready-to-use site in seconds.</p>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-primary mb-2">My Role</h3>
+                        <p>I single-handedly designed, developed, and deployed the full-stack application, managing everything from the user interface and frontend interactivity to the backend logic and AI API integration.</p>
+                    </div>
+
+                    <div>
+                        <h3 class="text-lg font-semibold text-primary mb-3">Tech Stack</h3>
+                        <div class="flex flex-wrap gap-3">
+                            <span class="bg-secondary text-sm py-1 px-3 rounded-full">Python</span>
+                            <span class="bg-secondary text-sm py-1 px-3 rounded-full">FastAPI</span>
+                            <span class="bg-secondary text-sm py-1 px-3 rounded-full">Alpine.js</span>
+                            <span class="bg-secondary text-sm py-1 px-3 rounded-full">Tailwind CSS</span>
+                            <span class="bg-secondary text-sm py-1 px-3 rounded-full">AI APIs (OpenRouter)</span>
+                            <span class="bg-secondary text-sm py-1 px-3 rounded-full">Render</span>
+                        </div>
+                    </div>
+
+                    <div class="pt-6">
+                        <a href="https://landingnest.cotravels.in" target="_blank" class="inline-flex items-center gap-2 bg-[var(--accent-secondary)] text-white font-bold py-3 px-6 rounded-lg w-fit hover:opacity-90 transition-opacity">
+                            View Live Demo
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div x-show="ideaVisorOpen" @keydown.escape.window="ideaVisorOpen = false" x-transition x-cloak class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
+        <div @click.away="ideaVisorOpen = false" class="w-full max-w-3xl max-h-[90vh] overflow-y-auto glass-ui rounded-xl border-[var(--accent-secondary)]">
+            <div class="p-8 md:p-12">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h2 class="text-3xl md:text-4xl font-bold text-primary">IdeaVisor</h2>
+                        <p class="text-secondary mt-1">AI-Powered Business Idea Validator</p>
+                    </div>
+                    <button @click="ideaVisorOpen = false" class="text-secondary hover:text-primary transition text-3xl">&times;</button>
+                </div>
+
+                <div class="mt-8 space-y-6 text-secondary">
+                    <div>
+                        <h3 class="text-lg font-semibold text-primary mb-2">The Problem</h3>
+                        <p>Early-stage entrepreneurs often struggle to get objective, comprehensive, and quick feedback on their business ideas, leading to wasted time and resources on concepts that may not be viable.</p>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-primary mb-2">The Solution</h3>
+                        <p>IdeaVisor is a SaaS application that acts as an AI-powered business consultant. Users input their business idea, and the tool leverages generative AI to provide a multi-faceted analysis, including Founder-market fit analysis, competitor insights, and potential challenges.</p>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-primary mb-2">My Role</h3>
+                        <p>As the sole creator, I was responsible for the entire project lifecycle. This included designing the user experience, developing both the frontend and backend, integrating the AI APIs, and deploying the final application.</p>
+                    </div>
+
+                    <div>
+                        <h3 class="text-lg font-semibold text-primary mb-3">Tech Stack</h3>
+                        <div class="flex flex-wrap gap-3">
+                            <span class="bg-secondary text-sm py-1 px-3 rounded-full">Python</span>
+                            <span class="bg-secondary text-sm py-1 px-3 rounded-full">FastAPI</span>
+                            <span class="bg-secondary text-sm py-1 px-3 rounded-full">JavaScript</span>
+                            <span class="bg-secondary text-sm py-1 px-3 rounded-full">OpenRouter API</span>
+                            <span class="bg-secondary text-sm py-1 px-3 rounded-full">Render</span>
+                        </div>
+                    </div>
+
+                    <div class="pt-6">
+                        <a href="https://ideavisor.cotravels.in" target="_blank" class="inline-flex items-center gap-2 bg-[var(--accent-secondary)] text-white font-bold py-3 px-6 rounded-lg w-fit hover:opacity-90 transition-opacity">
+                            View Live Demo
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div x-show="linkedinAutomationOpen" @keydown.escape.window="linkedinAutomationOpen = false" x-transition x-cloak class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
+        <div @click.away="linkedinAutomationOpen = false" class="w-full max-w-3xl max-h-[90vh] overflow-y-auto glass-ui rounded-xl border-[var(--accent-secondary)]">
+            <div class="p-8 md:p-12">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h2 class="text-3xl md:text-4xl font-bold text-primary">Automated LinkedIn Content</h2>
+                        <p class="text-secondary mt-1">AI-Powered Content Research & Publishing Pipeline</p>
+                    </div>
+                    <button @click="linkedinAutomationOpen = false" class="text-secondary hover:text-primary transition text-3xl">&times;</button>
+                </div>
+
+                <div class="mt-8 space-y-6 text-secondary">
+                    <div>
+                        <h3 class="text-lg font-semibold text-primary mb-2">The Problem</h3>
+                        <p>Maintaining a consistent, high-quality social media presence is time-consuming. The daily grind of researching trending topics, writing engaging posts, and creating visuals detracts from core development tasks.</p>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-primary mb-2">The Solution</h3>
+                        <p>I built an end-to-end automated content pipeline. The system uses a self-hosted n8n workflow to research trending topics and generate post ideas with AI. A second Make.com workflow then creates a relevant image and queues the post for a simple, one-click approval in a Google Sheet. Once approved, the system automatically publishes the final post to LinkedIn.</p>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-primary mb-2">My Role</h3>
+                        <p>I single-handedly designed and built the entire automation architecture, integrating multiple platforms (n8n, Make.com) and AI models to create a seamless, hands-off content generation system with a human-in-the-loop for final quality control.</p>
+                    </div>
+
+                    <div>
+                        <h3 class="text-lg font-semibold text-primary mb-3">Tech Stack</h3>
+                        <div class="flex flex-wrap gap-3">
+                            <span class="bg-secondary text-sm py-1 px-3 rounded-full">n8n.io</span>
+                            <span class="bg-secondary text-sm py-1 px-3 rounded-full">Make.com</span>
+                            <span class="bg-secondary text-sm py-1 px-3 rounded-full">Google Gemini AI</span>
+                            <span class="bg-secondary text-sm py-1 px-3 rounded-full">Google Sheets</span>
+                            <span class="bg-secondary text-sm py-1 px-3 rounded-full">App Scripts</span>
+                            <span class="bg-secondary text-sm py-1 px-3 rounded-full">Google Cloud</span>
+                            <span class="bg-secondary text-sm py-1 px-3 rounded-full">LinkedIn API</span>
+                        </div>
+                    </div>
+
+                    <div class="pt-4">
+                        <h3 class="text-lg font-semibold text-primary mb-4">Workflow Architecture</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <img src="n8n_workflow.png" alt="n8n workflow for content generation" class="rounded-lg border border-[var(--border-color)]">
+                                <p class="text-xs text-center mt-2">1. Daily idea generation workflow in n8n.</p>
+                            </div>
+                            <div>
+                                <img src="make_workflow.png" alt="Make.com workflow for image creation and posting" class="rounded-lg border border-[var(--border-color)]">
+                                <p class="text-xs text-center mt-2">2. Image creation & posting workflow in Make.com.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
     <footer class="text-secondary p-4 text-center mt-auto m-2 md:m-4 glass-ui rounded-lg">
         <div class="container mx-auto">
             <p class="text-sm">&copy; 2025 Shubhansh Gupta. All Rights Reserved.</p>

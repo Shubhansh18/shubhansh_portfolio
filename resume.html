@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume & Impact | Shubhansh Gupta</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://kit.fontawesome.com/80710e270d.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-primary: #02040a; --bg-secondary: #0a0e17; --text-primary: #e6edf3;
+            --text-secondary: #8b949e; --accent-primary: #3b82f6; --accent-secondary: #16a34a;
+            --border-color: #30363d;
+        }
+        [x-cloak] { display: none !important; }
+        
+        body {
+            font-family: 'Outfit', sans-serif; background-color: var(--bg-primary);
+            color: var(--text-primary);
+        }
+        
+        .glass-ui {
+            background: rgba(10, 14, 23, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--border-color);
+        }
+
+        /* Chart Overrides for Dark Mode */
+        .chart-container { position: relative; width: 100%; height: 300px; }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-primary); }
+        ::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--accent-primary); }
+    </style>
+</head>
+<body x-data="resumeLogic()" class="min-h-screen flex flex-col">
+
+    <header x-data="{ mobileMenuOpen: false }" class="fixed top-0 left-0 right-0 z-40 m-2 md:m-4">
+        <div class="glass-ui rounded-lg">
+            <div class="container mx-auto flex justify-between items-center p-4">
+                <a href="index.html" class="text-xl font-bold">Shubhansh Gupta</a>
+                <nav class="hidden md:flex items-center space-x-6 text-secondary">
+                    <a href="index.html" class="hover:text-primary transition">Home</a>
+                    <a href="about.html" class="hover:text-primary transition">My Story</a>
+                    <a href="resume.html" class="text-primary font-bold border-b-2 border-[var(--accent-primary)]">Resume</a>
+                    <a href="contact.html" class="hover:text-primary transition">Contact</a>
+                </nav>
+                <button @click="mobileMenuOpen = !mobileMenuOpen" class="md:hidden text-primary">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
+            </div>
+            <div x-show="mobileMenuOpen" @click.away="mobileMenuOpen = false" x-cloak class="md:hidden border-t border-[var(--border-color)]">
+                <a href="index.html" class="block p-4 text-secondary hover:text-primary">Home</a>
+                <a href="about.html" class="block p-4 text-secondary hover:text-primary">My Story</a>
+                <a href="resume.html" class="block p-4 text-primary bg-[var(--bg-secondary)]">Resume</a>
+                <a href="contact.html" class="block p-4 text-secondary hover:text-primary">Contact</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow container mx-auto px-4 pt-32 pb-16 max-w-6xl">
+        
+        <div class="glass-ui rounded-xl p-8 mb-8 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div>
+                <h1 class="text-3xl md:text-5xl font-bold mb-2">Professional <span class="text-[var(--accent-primary)]">Experience</span></h1>
+                <p class="text-secondary max-w-2xl">
+                    Bridging the gap between scalable backend systems and Applied AI. 
+                    <span class="font-mono text-xs text-[var(--accent-secondary)] border border-[var(--border-color)] px-2 py-1 rounded ml-2">Open to Relocation</span>
+                </p>
+            </div>
+            <div class="flex gap-4">
+                <a href="https://github.com/Shubhansh18" target="_blank" class="p-3 glass-ui rounded-full hover:border-[var(--accent-primary)] transition text-secondary hover:text-white">
+                    <i class="fa-brands fa-github fa-xl"></i>
+                </a>
+                <a href="https://www.linkedin.com/in/shubhansh-gupta-0918301a0/" target="_blank" class="p-3 glass-ui rounded-full hover:border-[var(--accent-primary)] transition text-secondary hover:text-white">
+                    <i class="fa-brands fa-linkedin fa-xl"></i>
+                </a>
+                <a href="shubhansh_resume.pdf" download class="px-6 py-3 bg-[var(--accent-primary)] text-white font-bold rounded-lg hover:opacity-90 transition flex items-center gap-2">
+                    <i class="fa-solid fa-download"></i> Download PDF
+                </a>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            
+            <div class="lg:col-span-4 h-full">
+                <div class="glass-ui rounded-xl overflow-hidden h-full max-h-[600px] flex flex-col">
+                    <div class="p-4 border-b border-[var(--border-color)] bg-[var(--bg-secondary)]">
+                        <h3 class="font-mono text-sm text-[var(--accent-primary)]">Select Role to View Impact</h3>
+                    </div>
+                    <div class="overflow-y-auto">
+                        <template x-for="(job, index) in jobs" :key="index">
+                            <div @click="selectJob(index)" 
+                                 class="p-5 cursor-pointer border-l-4 transition-all duration-300 hover:bg-[var(--bg-secondary)]"
+                                 :class="selectedIndex === index ? 'border-[var(--accent-primary)] bg-[var(--bg-secondary)]' : 'border-transparent'">
+                                <div class="flex justify-between items-start mb-1">
+                                    <h4 class="font-bold text-lg" :class="selectedIndex === index ? 'text-white' : 'text-secondary'" x-text="job.role"></h4>
+                                </div>
+                                <p class="text-sm font-semibold text-[var(--accent-primary)] mb-1" x-text="job.company"></p>
+                                <p class="font-mono text-xs text-secondary" x-text="job.period"></p>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lg:col-span-8">
+                <div class="glass-ui rounded-xl p-8 min-h-[600px] flex flex-col">
+                    
+                    <div x-show="currentJob" x-transition.opacity class="mb-8">
+                        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 border-b border-[var(--border-color)] pb-4">
+                            <div>
+                                <h2 class="text-3xl font-bold text-white" x-text="currentJob.role"></h2>
+                                <p class="text-xl text-[var(--accent-primary)] mt-1" x-text="currentJob.company"></p>
+                            </div>
+                            <span class="mt-2 md:mt-0 px-3 py-1 glass-ui rounded text-sm font-mono text-secondary" x-text="currentJob.period"></span>
+                        </div>
+                        
+                        <p class="text-gray-300 leading-relaxed mb-6" x-text="currentJob.summary"></p>
+                        
+                        <h4 class="text-sm font-bold text-secondary uppercase tracking-widest mb-3">Key Contributions</h4>
+                        <ul class="space-y-2 mb-8">
+                            <template x-for="point in currentJob.keyPoints">
+                                <li class="flex items-start gap-3">
+                                    <i class="fa-solid fa-check text-[var(--accent-secondary)] mt-1.5 text-xs"></i>
+                                    <span class="text-gray-400 text-sm" x-text="point"></span>
+                                </li>
+                            </template>
+                        </ul>
+                    </div>
+
+                    <div class="mt-auto border-t border-[var(--border-color)] pt-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h4 class="text-sm font-bold text-secondary uppercase tracking-widest">Quantifiable Impact</h4>
+                            <span class="text-xs text-[var(--accent-primary)] italic" x-text="currentJob.impactCaption"></span>
+                        </div>
+
+                        <div x-show="currentJob.showChart" class="chart-container">
+                            <canvas id="impactChart"></canvas>
+                        </div>
+
+                        <div x-show="!currentJob.showChart" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <template x-for="(label, idx) in currentJob.impactLabels" :key="idx">
+                                <div class="glass-ui p-4 rounded-lg text-center bg-[var(--bg-secondary)] border border-[var(--border-color)]">
+                                    <div class="text-3xl font-bold text-white mb-2" x-text="currentJob.impactData[idx]"></div>
+                                    <div class="text-xs text-secondary uppercase tracking-wider font-semibold" x-text="label"></div>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-8 glass-ui rounded-xl p-8">
+            <h3 class="text-2xl font-bold mb-6 border-b border-[var(--border-color)] pb-4">Engineering Ecosystem</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div>
+                    <p class="text-secondary mb-6">
+                        My technical strategy focuses on the intersection of stability and innovation. I utilize robust backend frameworks (Django/Laravel) for core systems while leveraging modern AI tools (LLMs, RAG) for intelligent automation.
+                    </p>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="p-4 rounded-lg bg-[var(--bg-secondary)] border border-[var(--border-color)]">
+                            <h4 class="text-[var(--accent-primary)] font-bold mb-2">Backend</h4>
+                            <p class="text-sm text-secondary">FastAPI, Django, Laravel, PostgreSQL, Redis, RabbitMQ</p>
+                        </div>
+                        <div class="p-4 rounded-lg bg-[var(--bg-secondary)] border border-[var(--border-color)]">
+                            <h4 class="text-[var(--accent-secondary)] font-bold mb-2">AI / LLM</h4>
+                            <p class="text-sm text-secondary">OpenAI API, LangChain, RAG, n8n/make Automation</p>
+                        </div>
+                        <div class="p-4 rounded-lg bg-[var(--bg-secondary)] border border-[var(--border-color)]">
+                            <h4 class="text-purple-400 font-bold mb-2">DevOps</h4>
+                            <p class="text-sm text-secondary">Docker, CI/CD, Google Cloud, AWS, Vercel, Render</p>
+                        </div>
+                        <div class="p-4 rounded-lg bg-[var(--bg-secondary)] border border-[var(--border-color)]">
+                            <h4 class="text-orange-400 font-bold mb-2">Frontend</h4>
+                            <p class="text-sm text-secondary">Alpine.js, Tailwind CSS, JavaScript</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="h-[350px] flex items-center justify-center relative">
+                    <canvas id="skillRadar"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-12">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+                <div>
+                    <h3 class="text-3xl font-bold mb-2">Featured <span class="text-[var(--accent-secondary)]">Projects</span></h3>
+                    <p class="text-secondary max-w-xl">
+                        A showcase of products built from scratch, demonstrating full-stack capabilities and problem-solving.
+                    </p>
+                </div>
+                
+                <div class="glass-ui p-1 rounded-lg inline-flex">
+                    <template x-for="filter in ['all', 'AI', 'Tool']">
+                        <button @click="activeFilter = filter" 
+                                class="px-4 py-2 rounded-md text-sm font-medium transition-all capitalize"
+                                :class="activeFilter === filter ? 'bg-[var(--accent-primary)] text-white shadow-lg' : 'text-secondary hover:text-white'">
+                            <span x-text="filter === 'all' ? 'All Projects' : filter"></span>
+                        </button>
+                    </template>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <template x-for="project in projects.filter(p => activeFilter === 'all' || p.category === activeFilter)" :key="project.title">
+                    <div class="glass-ui rounded-xl overflow-hidden hover:-translate-y-2 transition-transform duration-300 flex flex-col h-full border border-transparent hover:border-[var(--accent-primary)] group">
+                        <div class="h-1 bg-gradient-to-r from-[var(--accent-primary)] to-[var(--accent-secondary)]"></div>
+                        
+                        <div class="p-6 flex-grow">
+                            <div class="flex justify-between items-start mb-4">
+                                <h4 class="text-xl font-bold text-white group-hover:text-[var(--accent-primary)] transition-colors" x-text="project.title"></h4>
+                                <span class="text-xs font-bold px-2 py-1 bg-[var(--bg-secondary)] border border-[var(--border-color)] text-[var(--accent-secondary)] rounded uppercase tracking-wide" x-text="project.category"></span>
+                            </div>
+                            <p class="text-secondary text-sm mb-6 leading-relaxed" x-text="project.desc"></p>
+                            
+                            <div class="flex flex-wrap gap-2">
+                                <template x-for="tech in project.tech">
+                                    <span class="text-xs px-2 py-1 bg-[var(--bg-secondary)] text-gray-300 rounded-md font-mono border border-[var(--border-color)]" x-text="tech"></span>
+                                </template>
+                            </div>
+                        </div>
+                        
+                        <div class="p-6 pt-0 mt-auto">
+                            <a :href="project.url !== '#' ? project.url : 'javascript:void(0)'" 
+                            :target="project.url !== '#' ? '_blank' : ''"
+                            class="block w-full text-center py-3 rounded-lg font-bold transition-all border border-[var(--border-color)] hover:bg-[var(--bg-secondary)] hover:text-white"
+                            :class="project.url !== '#' ? 'text-[var(--accent-primary)]' : 'text-secondary cursor-default opacity-70'">
+                                <span x-text="project.url !== '#' ? 'View Live Project' : 'Internal Tool'"></span> 
+                                <i x-show="project.url !== '#'" class="fa-solid fa-arrow-up-right-from-square ml-2 text-xs"></i>
+                            </a>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </main>
+
+    <footer class="text-secondary p-4 text-center mt-auto m-2 md:m-4 glass-ui rounded-lg">
+        <div class="container mx-auto">
+            <p class="text-sm">&copy; 2025 Shubhansh Gupta. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        function resumeLogic() {
+            return {
+                selectedIndex: 0,
+                activeFilter: 'all', // New State for Filters
+                jobs: [
+                    {
+                        role: "Software Developer",
+                        company: "Walkover Web Solutions (MSG91)",
+                        period: "Sep 2022 - Aug 2024",
+                        showChart: true,
+                        summary: "Core backend developer for a cloud communication platform (MSG91). Focused on high-throughput microservices, compliance systems, and performance optimization.",
+                        keyPoints: [
+                            "Engineered microservices (Segmento, Campaign) handling millions of API requests/day.",
+                            "Implemented effective message encoding and decoding logic for DLT templates to ensure reliable delivery.",
+                            "Optimized Admin Proxy & SAAR (User Proxy) systems, enhancing RBAC and API performance.",
+                            "Took complete ownership of Google Business Chat integration for the HELLO omnichannel platform."
+                        ],
+                        impactData: [200, 120, 99.9], 
+                        impactLabels: ['Legacy Latency (ms)', 'Optimized Latency (ms)', 'Delivery Rate %'],
+                        impactCaption: "Optimization reduced API latency by ~40% and improved message delivery reliability."
+                    },
+                    {
+                        role: "Product Engineer",
+                        company: "Aina3D (v0 Live)",
+                        period: "Sep 2025 - Present",
+                        showChart: false,
+                        summary: "Leading the technical development of Aina3D, a virtual try-on platform. Currently deployed the v0 MVP featuring interactive static 3D human models to gather initial user feedback, while actively architecting the fully optimized v1 launch.",
+                        keyPoints: [
+                            "Deployed v0 MVP (Live) featuring interactive static 3D human models for concept validation.",
+                            "Architecting backend APIs using FastAPI & PostgreSQL for the upcoming v1 release.",
+                            "Designing the roadmap for moving from static MVP models to fully optimized, AI-driven avatars."
+                        ],
+                        impactData: ["v0", "FastAPI", "Live"],
+                        impactLabels: ['Current Version', 'Backend Tech', 'Status'], 
+                        impactCaption: "Successfully launched v0 MVP for public testing and feedback."
+                    },
+                    {
+                        role: "Founder & Product Engineer",
+                        company: "CoTravels / Founders Nest",
+                        period: "Jan 2024 - Sep 2025",
+                        showChart: false,
+                        summary: "Founded CoTravels, an AI-powered social travel platform offering personalized itineraries and cost-splitting. Despite early user traction, identified B2C monetization gaps and B2B OTA dominance, leading to a strategic closure. Leveraged these insights to establish Founders Nest, a pre-incubator ecosystem (India's YC vision) designed to help early-stage founders validate ideas using student talent (Tech + MBA) and avoid the 9-12 month 'wasted effort' trap.",
+                        keyPoints: [
+                            "Engineered CoTravels: An AI itinerary planner avoiding overcrowded places, featuring social connection and expense splitting.",
+                            "Executed strategic pivot from B2C to B2B, validating market saturation by giants like MMT before closing.",
+                            "Building Founders Nest: A unique ecosystem connecting B.Tech/MBA students with entrepreneurs for affordable market research & tech.",
+                            "Developed micro-SaaS tools (IdeaVisor, LandingNest) to democratize startup validation and MVP launching."
+                        ],
+                        impactData: ["12 Mo", "3", "2"],
+                        impactLabels: ['Time Saved/Founder', 'Micro-SaaS Built', 'Major Pivots'],
+                        impactCaption: "Ecosystem designed to save founders 9-12 months of wasted development time."
+                    }
+                ],
+                // New Projects Data
+                projects: [
+                    {
+                        title: "LandingNest",
+                        url: "https://landingnest.cotravels.in",
+                        tech: ["Python", "FastAPI", "OpenAI", "Docker"],
+                        desc: "AI-powered landing page generator that converts text prompts into fully deployed websites instantly.",
+                        category: "AI"
+                    },
+                    {
+                        title: "IdeaVisor",
+                        url: "https://ideavisor.cotravels.in",
+                        tech: ["Laravel", "MySQL", "Prompt Eng", "LLMs"],
+                        desc: "Startup validation tool providing detailed analytical reports using YC/Lean Startup frameworks.",
+                        category: "AI"
+                    },
+                    {
+                        title: "AI Automation Pipeline",
+                        url: "#",
+                        tech: ["n8n", "Make", "OpenAI", "LinkedIn API"],
+                        desc: "Multi-step agent workflow to autonomously research, draft, and schedule LinkedIn content.",
+                        category: "Tool"
+                    }
+                ],
+                currentJob: null,
+                chartInstance: null,
+                radarInstance: null,
+
+                init() {
+                    this.currentJob = this.jobs[0];
+                    this.$nextTick(() => {
+                        this.renderImpactChart();
+                        this.renderRadarChart();
+                    });
+                },
+
+                selectJob(index) {
+                    this.selectedIndex = index;
+                    this.currentJob = this.jobs[index];
+                    
+                    this.$nextTick(() => {
+                        if (this.currentJob.showChart) {
+                            this.renderImpactChart();
+                        } else {
+                            if (this.chartInstance) {
+                                this.chartInstance.destroy();
+                                this.chartInstance = null;
+                            }
+                        }
+                    });
+                },
+
+                renderImpactChart() {
+                    if (this.chartInstance) this.chartInstance.destroy();
+
+                    const canvas = document.getElementById('impactChart');
+                    if (!canvas) return;
+
+                    const ctx = canvas.getContext('2d');
+                    Chart.defaults.color = '#8b949e';
+                    Chart.defaults.borderColor = '#30363d';
+                    
+                    this.chartInstance = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: this.currentJob.impactLabels,
+                            datasets: [{
+                                label: 'Metric Value',
+                                data: this.currentJob.impactData,
+                                backgroundColor: ['rgba(59, 130, 246, 0.2)', 'rgba(22, 163, 74, 0.2)', 'rgba(192, 132, 252, 0.2)'],
+                                borderColor: ['#3b82f6', '#16a34a', '#c084fc'],
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: { legend: { display: false } },
+                            scales: {
+                                y: { beginAtZero: true, grid: { color: '#30363d' } },
+                                x: { grid: { display: false } }
+                            }
+                        }
+                    });
+                },
+
+                renderRadarChart() {
+                    const ctx = document.getElementById('skillRadar').getContext('2d');
+                    this.radarInstance = new Chart(ctx, {
+                        type: 'radar',
+                        data: {
+                            labels: ['Backend Arch', 'API Design', 'GenAI/LLM', 'DevOps', 'Database', 'Frontend'],
+                            datasets: [{
+                                label: 'Proficiency',
+                                data: [90, 95, 85, 70, 85, 65],
+                                fill: true,
+                                backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                                borderColor: '#3b82f6',
+                                pointBackgroundColor: '#3b82f6',
+                                pointBorderColor: '#fff'
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: {
+                                r: {
+                                    angleLines: { color: '#30363d' },
+                                    grid: { color: '#30363d' },
+                                    pointLabels: { color: '#e6edf3', font: { size: 12 } },
+                                    ticks: { display: false, backdropColor: 'transparent' }
+                                }
+                            },
+                            plugins: { legend: { display: false } }
+                        }
+                    });
+                }
+            }
+        }
+    </script>
+</body>
+</html>
